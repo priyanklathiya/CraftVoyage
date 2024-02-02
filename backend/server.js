@@ -60,8 +60,22 @@ app.use("*",(req,res,next)=>{
 app.use('/Images', express.static('Images'));
 
 // Middlewares
+const authentication = require('./middlewares/authMiddleware');
+app.get('/auth/userSession', authentication.sessionUser);
+app.get('/auth/logout', authentication.logout);
 
 //  routers of the application
+const usersRoutes = require('./routes/users');
+
+// Login / Signup
+
+app.use('/api/users', usersRoutes);
+
+// admin
+
+// craftsman
+
+// customer
 
 // admin panel API
 
