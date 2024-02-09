@@ -18,12 +18,20 @@ const upload = multer({
 
 // Products API
 
-const { getAllProductsById, addProduct} = require("../controllers/products");
+const { getAllProductsById, addProduct, updateProduct, updateStatus} = require("../controllers/products");
 
-router.route("/getAllProductsById").get(getAllProductsById);
+router.route("/getAllProductsById").post(getAllProductsById);
 
 router.route("/addProduct").post(
-    upload.fields([ { name: 'image', maxCount: 1 },
-]), addProduct);
+    upload.fields([{ name: 'image', maxCount: 1 },        
+    ]), addProduct);
+
+
+router.route("/updateProduct").post(
+    upload.fields([{ name: 'image', maxCount: 1 },
+    ]), updateProduct);
+
+router.route("/updateStatus").post(updateStatus);
+
 
 module.exports = router;

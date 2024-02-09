@@ -13,11 +13,12 @@ const productSchema = new Schema({
     year: { type: Number },
     artist: { type: String, required: true },
     style: { type: String },
-    images: [{ type: String }],
+    image: { type: String },
+    quantity: { type: String },
     dimensions: {
-        height: { type: Number },
-        width: { type: Number },
-        depth: { type: Number }
+        height: { type: String },
+        width: { type: String },
+        depth: { type: String }
     },
     price: { type: Number, required: true },
     condition: { type: String },
@@ -27,8 +28,8 @@ const productSchema = new Schema({
         ref: 'user',
         required: true
     },
+    status: { type: Boolean, default: false }, //  (false means it's not available)
 });
-
 
 const info = mongoose.model("product", productSchema);
 module.exports = info;

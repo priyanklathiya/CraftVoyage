@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
+import CraftsmanDatatable from './CraftsmanDatatable';
 
 function CraftsmanDashboard() {
 
@@ -34,7 +35,10 @@ function CraftsmanDashboard() {
         }, []);
     
   return (
-    <div>CraftsmanDashboard</div>
+      <>
+          <CraftsmanDatatable  isLoggedIn={isLoggedIn} userId={userId} />
+      </>
+      
   )
 }
 

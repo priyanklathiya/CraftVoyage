@@ -12,6 +12,7 @@ import CustomerLogin from './components/Register/CustomerLogin.js';
 import CustomerSignUp from './components/Register/CustomerSignUp.js';
 import CraftsmanDashboard from './components/Craftsman/CraftsmanDashboard.js';
 import AdminDashboard from './components/Admin/AdminDashboard.js';
+import AddUpdateProduct from './components/Craftsman/AddUpdateProduct.js';
 
 function App() {
 
@@ -37,6 +38,7 @@ function App() {
             <Route path="/CustomerSignUp" element={<CustomerSignUp />} />
             <Route path="/craftsmanDashboard" element={<CraftsmanDashboard />} />
             <Route path="/adminDashboard" element={<AdminDashboard />} />
+            <Route path="/AddUpdateProduct" element={<AddUpdateProduct />} />
           </Route>
         
         </Routes>
