@@ -33,5 +33,4 @@ router.route("/updateProduct").post(
 
 router.route("/updateStatus").post(updateStatus);
 
-
 module.exports = router;
