@@ -10,6 +10,7 @@ function AddUpdateProduct() {
     const [userId, setUserId] = useState('');
     const location = useLocation()
     const { type, productDetails } = location.state;
+    const history = useNavigate();
 
     useEffect(() => {
         async function fetchUserSession() {
@@ -55,10 +56,35 @@ function AddUpdateProduct() {
     const [price, setPrice] = useState("");
     const [condition, setCondition] = useState("");
     const [additionalInformation, setAdditionalInformation] = useState("");
+    const [productId, setProductId] = useState("");
 
     const [successMsg, setSuccessMsg] = useState("");
     // separate state variables to track new image selections on update
     const [newImage, setNewImage] = useState(false);
+
+    useEffect(() => {
+        if (type === "update") {
+
+            // Set all the state values based on the product details, including image paths
+            setTitle(productDetails.title);
+            setDescription(productDetails.description);
+            setYear(productDetails.year);
+            setArtist(productDetails.artist);
+            setStyle(productDetails.style);
+            setQuantity(productDetails.quantity);
+            setHeight(productDetails.dimensions.height);
+            setWidth(productDetails.dimensions.width);
+            setDepth(productDetails.dimensions.depth);
+            setPrice(productDetails.price);
+            setCondition(productDetails.condition);
+            setAdditionalInformation(productDetails.additionalInformation);
+            setProductId(productDetails._id);
+            setImage(productDetails.image);
+
+        }        
+    }, [type, productDetails]);
+    
+    
 
     const formRef = useRef();
 
@@ -107,6 +133,58 @@ function AddUpdateProduct() {
 
         const formData = new FormData();
         if (type === "update") {
+            formData.append("title", title);
+            formData.append("description", description);
+            formData.append("year", year);
+            formData.append("artist", artist);
+            formData.append("style", style);
+            formData.append("quantity", quantity);
+            // formData.append("image", image);
+            formData.append("height", height);
+            formData.append("width", width);
+            formData.append("depth", depth);
+            formData.append("price", price);
+            formData.append("condition", condition);
+            formData.append("userId", userId);
+            formData.append("productId", productId);
+
+            
+            if (newImage) {
+                
+                formData.append("newImage", newImage);
+                formData.append("image", image);
+            } else {
+                // Use the original image path if a new image wasn't selected
+                formData.append("image", productDetails.image || "");
+            }
+
+                                    
+        axios.post("http://localhost:8080/api/products/updateProduct", formData, { headers: { "Content-Type": "multipart/form-data" } })
+            .then((response) => { 
+                window.scrollTo(0, 0);
+                if (response.status === 200) {
+                    if (response.data.status === 1) {
+                       
+                        history("/craftsmanDashboard");
+
+                    }
+                    else {
+                        setIsSuccess(false);
+                        setIsFailed(true);
+                        setSuccessMsg(response.data.msg);
+                    }
+                } else {
+                    setIsSuccess(false);
+                    setIsFailed(true);
+                    setSuccessMsg('Something went wrong. Please try again later!');
+                    }
+            }).catch((err) => { 
+                setIsSuccess(false);
+                setIsFailed(true);
+                setSuccessMsg(err.message);
+            })
+
+
         } else {
             formData.append("title", title);
             formData.append("description", description);
@@ -169,17 +247,14 @@ function AddUpdateProduct() {
                     setIsFailed(true);
                     setSuccessMsg(err.message);
                 })
-
         }
-
-
     }
 
     
   return (
       <>
-          <h1>Add/Update Product</h1>
           <div className='container mt-5'>
+          <h1>Add/Update Product</h1>
                 {isSuccess && (
                     <div className="alert alert-success m-3" role="alert">
                         <b>Success!</b><br /> {successMsg}
@@ -275,6 +350,13 @@ function AddUpdateProduct() {
                           placeholder="Select an image" />
                         <div className="invalid-feedback">Please select image</div>
                   </div>
+                  
+                  {type === "update" && (
+                      
+                      <img src={`http://localhost:8080/${productDetails.image}`} style={{ width: '200px', height: 'auto' }}  alt={`${productDetails.image}`} />
+                      
+                  )}
+                  
                   <div className="form-group col-sm-6 margin-center">
                       <label htmlFor="height">Height: </label><br />
                         <input type="number"

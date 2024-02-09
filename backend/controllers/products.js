@@ -1,26 +1,6 @@
 const bcrypt = require('bcrypt');
 const productsmodel = require('../models/products.model');
 
-// const getAllProductsById = async (req, res) => {
-//     try {
-        
-//         const userId = req.body.userId;
-//         console.log(userId);
-//         const product = await productsmodel.find({ _id: userId });
-//         console.log(product);
-
-//         res.status(200).json({ product });
-
-//         if (!product) {
-//             return res.status(404).json({ error: 'No Products found!' });
-//         }
-//         res.status(200).json({ product });
-        
-//     } catch (error) {
-//         res.status(500).json({ error: 'Internal Server Error' });
-//     }
-// };
-
 const getAllProductsById = async (req, res) => {
     const userId = req.body.userId;
     try {
@@ -75,12 +55,13 @@ const addProduct = async (req, res) => {
 
 const updateProduct = async (req, res) => { 
     try {
-        // console.log(req.body);
+        console.log(req.body);
+        
         let _image = "default";
         if (req.files.image) {
              _image = "Images/products/"+req.files.image[0].filename;
         } else if (req.body.image) {
-            _image = "Images/products/"+req.body.image;
+            _image = req.body.image;
         }
         // let _image = "default";
         // if (req.files.image) {
@@ -111,8 +92,8 @@ const updateProduct = async (req, res) => {
         // Check if image is not default and update it
 
         // if (_image !== 'default') {
-        //     updatedProductData.imagePath = {
-        //         ...updatedProductData.imagePath,
+        //     updatedProductData.image = {
+        //         ...updatedProductData.image,
         //         image: _image
         //     };
         // }
@@ -130,6 +111,7 @@ const updateStatus = async (req, res) => {
         const updatedProductData = {
             status: req.body.status,
         };
+        console.log(req.body.status, req.body.productId);
         await productsmodel.findOneAndUpdate({ _id: req.body.productId }, updatedProductData ).then(() => {
             res.status(200).json({ msg: "Data updated successfully.", status: 1 });
         });
