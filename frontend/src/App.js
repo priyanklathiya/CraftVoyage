@@ -13,6 +13,10 @@ import CustomerSignUp from './components/Register/CustomerSignUp.js';
 import CraftsmanDashboard from './components/Craftsman/CraftsmanDashboard.js';
 import AdminDashboard from './components/Admin/AdminDashboard.js';
 import AddUpdateProduct from './components/Craftsman/AddUpdateProduct.js';
+import Category from './components/Admin/Category.js';
+import AddUpdateCategory from './components/Admin/AddUpdateCategory.js';
+import Condition from './components/Admin/Condition.js';
+import AddUpdateCondition from './components/Admin/AddUpdateCondition.js';
 
 function App() {
 
@@ -25,8 +29,7 @@ function App() {
 
   return (
     <>
-      <BrowserRouter>
-        
+      <BrowserRouter>       
         <Routes>
             <Route path="/" element={<HeaderFooterRoute />}>
             <Route index element={<Home />} />
@@ -39,10 +42,12 @@ function App() {
             <Route path="/craftsmanDashboard" element={<CraftsmanDashboard />} />
             <Route path="/adminDashboard" element={<AdminDashboard />} />
             <Route path="/AddUpdateProduct" element={<AddUpdateProduct />} />
+            <Route path="/Category" element={<Category />} />
+            <Route path="/AddUpdateCategory" element={<AddUpdateCategory />} />
+            <Route path="/Condition" element={<Condition />} />
+            <Route path="/AddUpdateCondition" element={<AddUpdateCondition />} />
           </Route>
-        
         </Routes>
-
       </BrowserRouter>
     </>
   );

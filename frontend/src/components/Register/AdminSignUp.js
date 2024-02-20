@@ -4,8 +4,7 @@ import Signup from './Signup'
 function AdminSignUp() {
   return (
       <>
-          AdminSignUp
-          <Signup />
+          <Signup link="/AdminLogin" />
       </>
   )
 }

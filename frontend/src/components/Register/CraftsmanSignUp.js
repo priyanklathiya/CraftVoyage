@@ -4,9 +4,7 @@ import Signup from './Signup'
 function CraftsmanSignUp() {
   return (
       <>
-          CraftsmanSignUp
-          <Signup />
-          
+          <Signup link="/CraftsmanLogin"  />          
       </>
   )
 }

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 function Signup(props) {
     const [formErrors, setFormErrors] = useState({});
@@ -120,6 +121,8 @@ function Signup(props) {
   return (
       <>
           <div className='col-sm-5 m-auto'>
+              <h1 className='display-5'>Registration</h1>
+              <hr />
               {isSuccess && (
                     <div className="alert alert-success mt-3" role="alert">
                         <b>Success!</b> {successMsg}
@@ -220,7 +223,11 @@ function Signup(props) {
                               )}
                               
                           </div>                          
-                          <button type="submit" className="btn btn-primary btn-block mb-3">Sign in</button>                          
+                          <button type="submit" className="btn btn-primary btn-block mb-3">Sign in</button>    
+                            <div className="text-center">
+                                <p>Already a member? 
+                            <Link to={props.link}>Login</Link> </p>
+                        </div>
                       </form>
                   </div>
               </div>

@@ -114,25 +114,19 @@ function Header() {
                   
                 ) : ""}
                 
-                
-
                 {userType != 0 ? (                  
                   <a href="#" onClick={logout} className="nav-link">Logout</a>                  
-                ) : ""}                
+                ) : ""}     
+                
               </ul>
-              
-                  
-      {/* <form className="d-flex" role="search">
-        <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-        <button className="btn btn-outline-success" type="submit">Search</button>
-      </form> */}
+            
               </div>
           </div>
             </nav>
         <main>
 
           {/* artist nav bar */}
-          {userType === 2 ? (
+          {userType === 2 || userType === 3 ? (
 
             <div className="container-fluid">
               <div className="row flex-nowrap">
@@ -142,32 +136,65 @@ function Header() {
                               <span className="fs-5 d-none d-sm-inline">Menu</span>
                           </a>
                           <ul className="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
-                              <li className="nav-item">
-                        <Link to="/craftsmanDashboard" className="nav-link align-middle px-0">
-                          <i className="fa-solid fa-house"></i> <span className="ms-1 d-none d-sm-inline">Home</span>  
-                        </Link>  
-                      </li>
 
-                              {/* <li>
-                                  <a href="#submenu1" data-bs-toggle="collapse" className="nav-link px-0 align-middle">
-                                      <i className="fa-solid fa-gauge"></i> <span className="ms-1 d-none d-sm-inline">Products</span> </a>
-                                  <ul className="collapse show nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
-                                      <li className="w-100">
-                                          <a href="#" className="nav-link px-0"> <span className="d-none d-sm-inline">Add Product</span> 1 </a>
-                                      </li>
-                                      <li>
-                                          <a href="#" className="nav-link px-0"> <span className="d-none d-sm-inline">Item</span> 2 </a>
-                                      </li>
-                                  </ul>
-                              </li> */}
-                      <li>
-                        {/* <a href="#" className="nav-link px-0 align-middle">
-                          <i className="fa-solid fa-list"></i> <span className="ms-1 d-none d-sm-inline">Orders</span>
-                        </a> */}
-                        <Link to="/AddUpdateProduct" state={{ type: 'new' }}  className="nav-link px-0 align-middle">
-                          <i className="fa-solid fa-list"></i> <span className="ms-1 d-none d-sm-inline">Add Product</span>
-                        </Link>
-                      </li>
+                      {/* for craftman */}
+
+
+                      {userType === 2 ? (
+                          <li className="nav-item">
+                                <Link to="/craftsmanDashboard" className="nav-link align-middle px-0">
+                                  <i className="fa-solid fa-house"></i> <span className="ms-1 d-none d-sm-inline">Home</span>  
+                                </Link>  
+                          </li>
+                      ) : ""}
+
+                      {userType === 2 ? (
+                        <li>
+                          <Link to="/AddUpdateProduct" state={{ type: 'new' }}  className="nav-link px-0 align-middle">
+                            <i className="fa-solid fa-list"></i> <span className="ms-1 d-none d-sm-inline">Add Product</span>
+                          </Link>
+                        </li>
+                      ) : ""}
+
+                      {/* for admin */}
+
+                      {userType === 3 ? (
+                          <li className="nav-item">
+                                <Link to="/adminDashboard" className="nav-link align-middle px-0">
+                                  <i className="fa-solid fa-house"></i> <span className="ms-1 d-none d-sm-inline">Home</span>  
+                                </Link>  
+                          </li>
+                      ) : ""}
+
+                      {userType === 3 ? (
+                          <li className="nav-item">
+                                <Link to="/Category" className="nav-link align-middle px-0">
+                                  <i className="fa-solid fa-list"></i> <span className="ms-1 d-none d-sm-inline">Category</span>  
+                                </Link>  
+                          </li>
+                      ) : ""}
+
+                      {userType === 3 ? (
+                          <li className="nav-item">
+                                <Link to="/Condition" className="nav-link align-middle px-0">
+                                  <i className="fa-solid fa-sliders"></i> <span className="ms-1 d-none d-sm-inline">Condition</span>  
+                                </Link>  
+                          </li>
+                      ) : ""}
+
+                      {/* <li>
+                          <a href="#submenu1" data-bs-toggle="collapse" className="nav-link px-0 align-middle">
+                              <i className="fa-solid fa-gauge"></i> <span className="ms-1 d-none d-sm-inline">Products</span> </a>
+                          <ul className="collapse show nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
+                              <li className="w-100">
+                                  <a href="#" className="nav-link px-0"> <span className="d-none d-sm-inline">Add Product</span> 1 </a>
+                              </li>
+                              <li>
+                                  <a href="#" className="nav-link px-0"> <span className="d-none d-sm-inline">Item</span> 2 </a>
+                              </li>
+                          </ul>
+                      </li> */}
+
                     </ul>
                     <hr />
                   </div>

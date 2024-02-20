@@ -69,7 +69,9 @@ function SignIn(props) {
     
   return (
       <>
-          <div className='col-sm-5 m-auto'>  
+      <div className='col-sm-5 m-auto'>  
+        <h1 className='display-5'>Login</h1>
+        <hr />
                 {isSuccess && (
                     <div className="alert alert-success mt-3" role="alert">
                         <b>Success!</b> {successMsg}

@@ -4,7 +4,6 @@ import SignIn from './SignIn'
 function CustomerLogin() {
   return (
     <>
-      CustomerLogin
       <SignIn link="/CustomerSignUp" />
     </>
   )

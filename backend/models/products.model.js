@@ -12,7 +12,6 @@ const productSchema = new Schema({
     description: { type: String, trim: true },
     year: { type: Number },
     artist: { type: String, required: true },
-    style: { type: String },
     image: { type: String },
     quantity: { type: String },
     dimensions: {
@@ -21,12 +20,19 @@ const productSchema = new Schema({
         depth: { type: String }
     },
     price: { type: Number, required: true },
-    condition: { type: String },
     additionalInformation: { type: String },
     userId: {
         type: Schema.Types.ObjectId,
         ref: 'user',
         required: true
+    },
+    categoryId: {
+        type: Schema.Types.ObjectId,
+        ref: 'category'
+    },
+    conditionId: {
+        type: Schema.Types.ObjectId,
+        ref: 'condition'
     },
     status: { type: Boolean, default: false }, //  (false means it's not available)
 });

@@ -3,9 +3,8 @@ import Signup from './Signup'
 
 function CustomerSignUp() {
   return (
-      <>CustomerSignUp
-          <Signup />
-          
+      <>
+          <Signup link="/CustomerLogin" />
       </>
   )
 }

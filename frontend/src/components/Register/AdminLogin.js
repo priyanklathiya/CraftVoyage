@@ -4,7 +4,6 @@ import SignIn from './SignIn'
 function AdminLogin() {
   return (
     <>
-      Admin Login
       <SignIn link="/AdminSignUp" />
     </>
   )

@@ -3,8 +3,7 @@ import SignIn from './SignIn'
 
 function CraftsmanLogin() {
   return (
-    <>CraftsmanLogin
-    
+    <>
       <SignIn link="/CraftsmanSignUp" />
     </>
   )

@@ -6,12 +6,12 @@ const Schema = mongoose.Schema;
 
 mongoose.Promise = global.Promise;
 
-// category schema
-const categorySchema = new Schema({
-    categoryName: { type: String, required: true, trim: true },
+// condition schema
+const conditionSchema = new Schema({
+    conditionName: { type: String, required: true, trim: true },
     status: { type: Boolean, default: true }, //  (false means it's not available)
 });
 
 
-const info = mongoose.model("category", categorySchema);  // collection name - category
+const info = mongoose.model("condition", conditionSchema);  // collection name - condition
 module.exports = info;

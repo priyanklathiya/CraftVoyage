@@ -67,12 +67,19 @@ app.get('/auth/logout', authentication.logout);
 //  routers of the application
 const usersRoutes = require('./routes/users');
 const productsRoutes = require('./routes/products');
+const categoryRoutes = require('./routes/category');
+const conditionRoutes = require('./routes/condition');
 
 // Login / Signup
-
 app.use('/api/users', usersRoutes);
 
 // admin
+
+// category
+app.use('/api/category', categoryRoutes);
+
+// condition
+app.use('/api/condition', conditionRoutes);
 
 // craftsman
 app.use('/api/products', productsRoutes);

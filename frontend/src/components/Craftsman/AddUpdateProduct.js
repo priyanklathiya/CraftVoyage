@@ -47,20 +47,48 @@ function AddUpdateProduct() {
     const [description, setDescription] = useState("");
     const [year, setYear] = useState("");
     const [artist, setArtist] = useState("");
-    const [style, setStyle] = useState("");
     const [quantity, setQuantity] = useState("");
     const [image, setImage] = useState("");
     const [height, setHeight] = useState("");
     const [width, setWidth] = useState("");
     const [depth, setDepth] = useState("");
     const [price, setPrice] = useState("");
-    const [condition, setCondition] = useState("");
     const [additionalInformation, setAdditionalInformation] = useState("");
     const [productId, setProductId] = useState("");
+    const [selectedCategory, setSelectedCategory] = useState('');
+    const [selectedCondition, setSelectedCondition] = useState('');
+    const [categories, setCategories] = useState([]);
+    const [conditions, setConditions] = useState([]);
 
     const [successMsg, setSuccessMsg] = useState("");
     // separate state variables to track new image selections on update
     const [newImage, setNewImage] = useState(false);
+
+        useEffect(() => {
+        // Fetch brand data from your Node.js server using Axios
+            axios.get('http://localhost:8080/api/category/getAllCategory') 
+            .then((response) => {
+                if (response.data) {
+                    setCategories(response.data.allCategory);
+                }
+            })
+            .catch((error) => {
+                console.error('Error fetching brands: ', error);
+            });
+
+            axios.get('http://localhost:8080/api/condition/getAllCondition') 
+            .then((response) => {
+                if (response.data) {
+                    setConditions(response.data.allCondition);
+                }
+            })
+            .catch((error) => {
+                console.error('Error fetching brands: ', error);
+            });
+        
+        }, []);
+    
+    
 
     useEffect(() => {
         if (type === "update") {
@@ -70,16 +98,16 @@ function AddUpdateProduct() {
             setDescription(productDetails.description);
             setYear(productDetails.year);
             setArtist(productDetails.artist);
-            setStyle(productDetails.style);
             setQuantity(productDetails.quantity);
             setHeight(productDetails.dimensions.height);
             setWidth(productDetails.dimensions.width);
             setDepth(productDetails.dimensions.depth);
             setPrice(productDetails.price);
-            setCondition(productDetails.condition);
             setAdditionalInformation(productDetails.additionalInformation);
             setProductId(productDetails._id);
             setImage(productDetails.image);
+            setSelectedCategory(productDetails.categoryId);
+            setSelectedCondition(productDetails.conditionId);
 
         }        
     }, [type, productDetails]);
@@ -98,13 +126,13 @@ function AddUpdateProduct() {
                 description: !description,
                 year: !year,
                 artist: !artist,
-                style: !style,
                 quantity: !quantity,
                 height: !height,
                 width: !width,
                 depth: !depth,
                 price: !price,
-                condition: !condition,
+                selectedCategory: !selectedCategory,
+                selectedCondition: !selectedCondition,
                 image: !image && !productDetails.imagePath.image && !newImage,
             };
 
@@ -114,13 +142,13 @@ function AddUpdateProduct() {
                 description: !description,
                 year: !year,
                 artist: !artist,
-                style: !style,
                 quantity: !quantity,
                 height: !height,
                 width: !width,
                 depth: !depth,
                 price: !price,
-                condition: !condition,
+                selectedCategory: !selectedCategory,
+                selectedCondition: !selectedCondition,
                 image: !image
             };
             
@@ -137,16 +165,15 @@ function AddUpdateProduct() {
             formData.append("description", description);
             formData.append("year", year);
             formData.append("artist", artist);
-            formData.append("style", style);
             formData.append("quantity", quantity);
-            // formData.append("image", image);
             formData.append("height", height);
             formData.append("width", width);
             formData.append("depth", depth);
             formData.append("price", price);
-            formData.append("condition", condition);
             formData.append("userId", userId);
             formData.append("productId", productId);
+            formData.append("categoryId", selectedCategory);
+            formData.append("conditionId", selectedCondition);
 
             
             if (newImage) {
@@ -190,15 +217,15 @@ function AddUpdateProduct() {
             formData.append("description", description);
             formData.append("year", year);
             formData.append("artist", artist);
-            formData.append("style", style);
             formData.append("quantity", quantity);
             formData.append("image", image);
             formData.append("height", height);
             formData.append("width", width);
             formData.append("depth", depth);
             formData.append("price", price);
-            formData.append("condition", condition);
             formData.append("userId", userId);
+            formData.append("categoryId", selectedCategory);
+            formData.append("conditionId", selectedCondition);
 
             // console.log(formData);
             
@@ -214,14 +241,14 @@ function AddUpdateProduct() {
                             setDescription("");
                             setYear("");
                             setArtist("");
-                            setStyle("");
                             setQuantity("");
                             setImage("");
                             setHeight("");
                             setWidth("");
                             setDepth("");
                             setPrice("");
-                            setCondition("");
+                            setSelectedCategory("");
+                            setSelectedCondition("");
                             setAdditionalInformation("");
                             formRef.current.reset();
 
@@ -313,17 +340,48 @@ function AddUpdateProduct() {
                             placeholder="Enter artist" />
                         <div className="invalid-feedback">Please enter correct artist name</div>
                   </div>
-                  <div className="form-group col-sm-6 margin-center">
-                        <label htmlFor="style">Style: </label><br/>
-                        <input type="text"
-                            className={`form-control ${formErrors && (formErrors?.style ? "is-invalid" : "is-valid")}`}
-                            id="style"
-                            name="style"
-                            value={style}
-                            onChange={(e) => {setStyle(e.currentTarget.value);}}
-                            placeholder="Enter style" />
-                        <div className="invalid-feedback">Please enter correct style</div>
-                  </div>
+
+
+
+                    <div className="form-group col-sm-6 margin-center">
+                        <label htmlFor="categoryId">category :</label><br />
+                        <select
+                            className={`form-control ${formErrors && (formErrors?.selectedCategory ? "is-invalid" : "is-valid")}`}
+                            id="categoryId"
+                            name="categoryId"
+                            value={selectedCategory}  
+                            onChange={(e) => { setSelectedCategory(e.currentTarget.value); }}
+                        >
+                            <option value="">Select a Category</option>
+                            {categories.map((category) => (
+                                <option key={category._id} value={category._id}>
+                                    {category.categoryName}
+                                </option>
+                            ))}
+                        </select>
+                        <div className="invalid-feedback">Please select a valid Category.</div>
+                    </div>
+
+                    <div className="form-group col-sm-6 margin-center">
+                        <label htmlFor="conditionId">Condition :</label><br />
+                        <select
+                            className={`form-control ${formErrors && (formErrors?.selectedCondition ? "is-invalid" : "is-valid")}`}
+                            id="conditionId"
+                            name="conditionId"
+                            value={selectedCondition}  
+                            onChange={(e) => { setSelectedCondition(e.currentTarget.value); }}
+                        >
+                            <option value="">Select a Condition</option>
+                            {conditions.map((condition) => (
+                                <option key={condition._id} value={condition._id}>
+                                    {condition.conditionName}
+                                </option>
+                            ))}
+                        </select>
+                        <div className="invalid-feedback">Please select a valid Condition.</div>
+                    </div>
+
+
                   <div className="form-group col-sm-6 margin-center">
                         <label htmlFor="quantity">Quantity: </label><br/>
                         <input type="number"
@@ -401,7 +459,7 @@ function AddUpdateProduct() {
                           placeholder="Enter price" />                      
                       <div className="invalid-feedback">Please enter correct price</div>                      
                   </div>
-                  <div className="form-group col-sm-6 margin-center">
+                  {/* <div className="form-group col-sm-6 margin-center">
                         <label htmlFor="condition">Condition: </label><br/>
                         <input type="text"
                             className={`form-control ${formErrors && (formErrors?.condition ? "is-invalid" : "is-valid")}`}
@@ -411,7 +469,7 @@ function AddUpdateProduct() {
                             onChange={(e) => {setCondition(e.currentTarget.value);}}
                             placeholder="Enter condition" />
                         <div className="invalid-feedback">Please enter correct condition</div>
-                  </div>
+                  </div> */}
                   <div className="form-group col-sm-6 margin-center">
                       <label htmlFor="additionalInformation">Additional Information: </label><br />                      
                       <textarea                          

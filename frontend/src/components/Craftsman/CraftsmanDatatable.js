@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import DataTable from 'react-data-table-component';
 import { Link } from 'react-router-dom';
-import { useLocation, useNavigate } from 'react-router-dom'
 
 function CraftsmanDatatable(props) {
     const [productData, setProductData] = useState(null);
@@ -12,9 +11,6 @@ function CraftsmanDatatable(props) {
     const [isFailed, setIsFailed] = useState(false);
     const [successMsg, setSuccessMsg] = useState("");
     
-    const location = useLocation()
-    const history = useNavigate();
-            
     async function fetchProductHistory() {
         try {
                 await axios.post("http://localhost:8080/api/products/getAllProductsById", {
@@ -80,6 +76,7 @@ function CraftsmanDatatable(props) {
             name: 'Title',
             selector: (row) => row.title,
             sortable: true,
+            width: "150px",
         },
         {
             name: 'Year',
@@ -89,10 +86,7 @@ function CraftsmanDatatable(props) {
         {
             name: 'Artist',
             selector: (row) => row.artist,
-        },
-        {
-            name: 'Style',
-            selector: (row) => row.style,
+            width: "150px",
         },
         {
             name: 'Image',
@@ -116,10 +110,6 @@ function CraftsmanDatatable(props) {
             selector: (row) => row.price,
             width: "80px"
         },
-        {
-            name: 'Condition',
-            selector: (row) => row.condition,
-        },
         {      
             name: 'Edit',
             cell: (row) => (
@@ -127,9 +117,9 @@ function CraftsmanDatatable(props) {
                     <Link to="/AddUpdateProduct" state={{ type: 'update', productDetails: row }} >Edit</Link>&nbsp;&nbsp;
                     {/* check status of product */}
                     {row.status === true ? (
-                        <button className='btn btn-danger' onClick={()=> changeStatusEvent(row._id, false)}>Disable</button>
+                        <button className='btn btn-danger' onClick={()=> changeStatusEvent(row._id, false)}> Disable </button>
                     ): (
-                        <button className='btn btn-success' onClick={()=> changeStatusEvent(row._id, true)}>Enable</button> 
+                        <button className='btn btn-success' onClick={()=> changeStatusEvent(row._id, true)}> Enable </button> 
                     )}
                     
                 </>

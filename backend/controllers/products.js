@@ -32,9 +32,9 @@ const addProduct = async (req, res) => {
             description: req.body.description,
             year: req.body.year,
             artist: req.body.artist,
-            style: req.body.style,
             image: _image,
-            condition: req.body.condition,
+            categoryId: req.body.categoryId,
+            conditionId: req.body.conditionId,
             price: req.body.price,
             quantity: req.body.quantity,
             additionalInformation: req.body.additionalInformation,
@@ -55,7 +55,6 @@ const addProduct = async (req, res) => {
 
 const updateProduct = async (req, res) => { 
     try {
-        console.log(req.body);
         
         let _image = "default";
         if (req.files.image) {
@@ -74,9 +73,9 @@ const updateProduct = async (req, res) => {
             description: req.body.description,
             year: req.body.year,
             artist: req.body.artist,
-            style: req.body.style,
             image: _image,
-            condition: req.body.condition,
+            categoryId: req.body.categoryId,
+            conditionId: req.body.conditionId,
             price: req.body.price,
             quantity: req.body.quantity,
             additionalInformation: req.body.additionalInformation,
@@ -111,7 +110,7 @@ const updateStatus = async (req, res) => {
         const updatedProductData = {
             status: req.body.status,
         };
-        console.log(req.body.status, req.body.productId);
+        // console.log(req.body.status, req.body.productId);
         await productsmodel.findOneAndUpdate({ _id: req.body.productId }, updatedProductData ).then(() => {
             res.status(200).json({ msg: "Data updated successfully.", status: 1 });
         });
