@@ -64,7 +64,8 @@ function Header() {
                 {userType === 0 || userType === 1 ? (
 
                   <li className="nav-item">
-                      <a className="nav-link active" aria-current="page" href="#">Home</a>
+                    {/* <a className="nav-link active" aria-current="page" href="#">Home</a> */}
+                    <Link className="nav-link active" to="/">Home</Link>
                   </li>             
 
                 ) : ""}
@@ -73,9 +74,8 @@ function Header() {
                 {userType === 0 || userType === 1 ? (
                   
                   <li className="nav-item">
-                      <a className="nav-link" href="#">Shop</a>
-                  </li>                
-
+                    <Link className="nav-link" to="/Shop">Shop</Link>
+                  </li>
                 ) : ""}
                               
               </ul>
@@ -182,6 +182,13 @@ function Header() {
                           </li>
                       ) : ""}
 
+                      {userType === 3 ? (
+                          <li className="nav-item">
+                                <Link to="/CraftsmenList" className="nav-link align-middle px-0">
+                                  <i class="fa-brands fa-artstation"></i> <span className="ms-1 d-none d-sm-inline">Craftsmen List</span>  
+                                </Link>  
+                          </li>
+                      ) : ""}
                       {/* <li>
                           <a href="#submenu1" data-bs-toggle="collapse" className="nav-link px-0 align-middle">
                               <i className="fa-solid fa-gauge"></i> <span className="ms-1 d-none d-sm-inline">Products</span> </a>

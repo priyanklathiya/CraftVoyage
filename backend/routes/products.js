@@ -18,7 +18,7 @@ const upload = multer({
 
 // Products API
 
-const { getAllProductsById, addProduct, updateProduct, updateStatus} = require("../controllers/products");
+const { getAllProductsById, addProduct, updateProduct, updateStatus, getAllProducts, filterProducts, getProductByPId} = require("../controllers/products");
 
 router.route("/getAllProductsById").post(getAllProductsById);
 
@@ -32,5 +32,13 @@ router.route("/updateProduct").post(
     ]), updateProduct);
 
 router.route("/updateStatus").post(updateStatus);
+
+router.route("/getAllProducts").get(getAllProducts);
+
+router.route("/filterProducts").post(filterProducts);
+
+router.route("/filterProducts").post(filterProducts);
+
+router.route("/getProductByPId").post(getProductByPId);
 
 module.exports = router;

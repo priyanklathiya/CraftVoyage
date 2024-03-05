@@ -17,6 +17,9 @@ import Category from './components/Admin/Category.js';
 import AddUpdateCategory from './components/Admin/AddUpdateCategory.js';
 import Condition from './components/Admin/Condition.js';
 import AddUpdateCondition from './components/Admin/AddUpdateCondition.js';
+import CraftsmenList from './components/Admin/CraftsmenList.js';
+import Index from './components/Shop/Index.js';
+import ProductDetails from './components/Shop/ProductDetails.js';
 
 function App() {
 
@@ -46,6 +49,9 @@ function App() {
             <Route path="/AddUpdateCategory" element={<AddUpdateCategory />} />
             <Route path="/Condition" element={<Condition />} />
             <Route path="/AddUpdateCondition" element={<AddUpdateCondition />} />
+            <Route path="/CraftsmenList" element={<CraftsmenList />} />
+            <Route path="/Shop" element={<Index />} />
+            <Route path="/ProductDetails" element={<ProductDetails />} />
           </Route>
         </Routes>
       </BrowserRouter>

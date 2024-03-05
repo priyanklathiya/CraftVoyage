@@ -34,6 +34,10 @@ const productSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'condition'
     },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
     status: { type: Boolean, default: false }, //  (false means it's not available)
 });
 

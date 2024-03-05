@@ -120,4 +120,73 @@ const updateStatus = async (req, res) => {
 }
 
 
-module.exports = { getAllProductsById, addProduct, updateProduct, updateStatus }
+const getAllProducts = async (req, res) => { 
+    const allProducts = await productsmodel.find({});
+    res.status(200).json({ allProducts });
+};
+
+
+const filterProducts = async (req, res) => {
+    const categories = req.body.categories || [];
+    const conditions = req.body.conditions || [];
+    const sortBy = req.body.sortBy;
+
+
+    try {
+        let filterCriteria = {};
+
+        // Handle filtering based on parameters
+        if (conditions.length > 0) {
+            // If conditions is an array, use $in operator
+            filterCriteria.conditionId = { $in: conditions };
+        }
+
+        if (categories.length > 0) {
+            // If categories is an array, use $in operator
+            filterCriteria.categoryId = { $in: categories };
+        }
+
+        // Check if all parameters are empty, if yes, retrieve all products
+        if (categories.length === 0 && conditions.length === 0 && !sortBy) {
+            // console.log('Fetching all products');
+            const products = await productsmodel.find({});
+            return res.status(200).json({ products });
+        }
+
+        let products;
+
+        // Fetch and filter products from the database based on the criteria
+        if (sortBy === 'lowToHigh') {
+            products = await productsmodel.find(filterCriteria).sort({ price: 1 });
+        } else if (sortBy === 'highToLow') {
+            products = await productsmodel.find(filterCriteria).sort({ price: -1 });
+        } else if (sortBy === 'newest') {
+            products = await productsmodel.find(filterCriteria).sort({ createdAt: -1 });
+        } else {
+            products = await productsmodel.find(filterCriteria);
+        }
+
+        // console.log(products);
+
+        res.status(200).json({ products });
+
+    } catch (err) {
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
+const getProductByPId = async (req, res) => {
+    const productId = req.body.productId;
+    try {
+        const product = await productsmodel.findOne({ _id: productId }); // Use the id variable in your query
+
+        if (!product) {
+            return res.status(404).json({ error: 'Product not found' });
+        }
+        res.status(200).json({ product });
+    } catch (err) {
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
+module.exports = { getAllProductsById, addProduct, updateProduct, updateStatus, getAllProducts, filterProducts, getProductByPId }

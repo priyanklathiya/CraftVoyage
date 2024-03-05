@@ -1,0 +1,135 @@
+.thumbs-wrapper {
+    display: none;
+}
+
+div.scroll-container {
+    display: flex;
+    background-color: #f0f0f0;
+    padding: 20px;
+    margin: auto;
+    overflow-x: auto;
+    white-space: nowrap;
+    width: 80%;
+
+}
+
+.product_image_slider {
+    width: 300px;
+    /* Adjust the width to your preference */
+    border: 1px solid #ddd;
+    margin: 0 10px;
+    padding: 15px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.product_image_slider img {
+    /* max-width: 100%;
+    height: auto; */
+    width: 100%;
+    height: 80%;
+    object-fit: contain;
+    
+}
+
+.product_image_slider:hover {
+    transform: scale(1.05);
+}
+
+.sellerName {
+    font-size: larger;
+    font-weight: 700;
+    margin: 5px 0;
+}
+
+.title {
+    font-size: large;
+    margin: 5px 0;
+}
+
+.price {
+    font-size: x-large;
+    color: #d20000;
+    margin: 5px 0;
+}
+.home{
+    padding: 15px;
+    background-color: #3a3a3a;
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+    .product_image_slider {
+        flex: 1 0 100%;
+    }
+}
+
+.btn-custom {
+    color: #ffffff;
+    background-color: #000000;
+    border-radius: 0%;
+}
+
+.container-banner-1{
+    padding-top: 30px;
+    padding-bottom: 40px;
+    border: 1px solid black;
+}
+
+.container-banner-1 h1 {
+    font-size: 4em;
+}
+
+.m-auto{
+    display: flex;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.grid-item {
+    background-color: #f2f2f2;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+@media only screen and (max-width: 768px) {
+    .grid-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+.background-black{
+    
+    border-radius: 15px;
+    max-width: 80%;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.heading{
+
+    padding: 10px;
+}
+
+.categories-section{
+    max-width: 80%;
+    margin: auto;
+    background-color: #f0f0f0;
+    border-radius: 15px;
+    padding: 15px;
+    margin-top: 15px;
+}
+
+.category-title{
+    padding: 10px;
+}

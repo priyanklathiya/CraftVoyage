@@ -3,9 +3,10 @@ const router = express.Router();
 
 // Users API
 
-const { getAllUsers, signup, login } = require("../controllers/users");
+const { getAllUsers, signup, login, getByUserType } = require("../controllers/users");
 
 router.route("/").get(getAllUsers);
+router.route("/getByUserType").post(getByUserType);
 router.route("/signup").post(signup);
 router.route("/login").post(login);
 

@@ -71,4 +71,21 @@ const login = async (req, res) => {
     } 
 }
 
-module.exports = {getAllUsers, signup, login}
+const getByUserType = async (req, res) => { 
+    const userType = req.body.userType;
+    try {
+        const usersList = await usermodel.find({ userType: userType });
+
+        if (!usersList) {
+            return res.status(404).json({ error: 'No users found!' });
+        }
+        
+        res.status(200).json({ usersList });
+        
+    } catch (error) {
+        console.error('Error fetching details:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
+module.exports = {getAllUsers, signup, login, getByUserType}

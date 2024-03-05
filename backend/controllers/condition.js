@@ -17,7 +17,6 @@ const getConditionById = async (req, res) => {
     res.status(200).json({ condition });
 };
 
-
 const addCondition = async (req, res) => { 
     try {
         await conditionmodel.create({
