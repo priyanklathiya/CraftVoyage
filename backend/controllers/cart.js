@@ -19,9 +19,18 @@ const addCart = async (req, res) => {
                 res.status(200).json({ msg: "Item already in cart!", statuscode: 3 });
                 
             } else {
-                // If product with the same productId and size doesn't exist, add the data
+                // add the product to the cart
+                 const updatedCart = await cartmodel.findOneAndUpdate(
+                    { userId },
+                    {
+                        $addToSet: {
+                            cartDetails: cartDetails[0]
+                        }
+                    },
+                    { new: true }
+                );
 
-                res.status(200).json({ msg: "Product is already in the cart.", statuscode: 3 });
+                res.status(200).json({ msg: "Data added successfully.", statuscode: 1 });
 
             }
             
