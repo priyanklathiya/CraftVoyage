@@ -20,6 +20,7 @@ import AddUpdateCondition from './components/Admin/AddUpdateCondition.js';
 import CraftsmenList from './components/Admin/CraftsmenList.js';
 import Index from './components/Shop/Index.js';
 import ProductDetails from './components/Shop/ProductDetails.js';
+import Cart from './components/Cart/Cart.js';
 
 function App() {
 
@@ -52,6 +53,7 @@ function App() {
             <Route path="/CraftsmenList" element={<CraftsmenList />} />
             <Route path="/Shop" element={<Index />} />
             <Route path="/ProductDetails" element={<ProductDetails />} />
+            <Route path="/Cart" element={<Cart />} />
           </Route>
         </Routes>
       </BrowserRouter>

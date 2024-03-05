@@ -69,6 +69,7 @@ const usersRoutes = require('./routes/users');
 const productsRoutes = require('./routes/products');
 const categoryRoutes = require('./routes/category');
 const conditionRoutes = require('./routes/condition');
+const cartRoutes = require('./routes/cart');
 
 // Login / Signup
 app.use('/api/users', usersRoutes);
@@ -87,6 +88,11 @@ app.use('/api/products', productsRoutes);
 // customer
 
 // admin panel API
+
+// cart
+app.use('/api/cart', cartRoutes);
+
+// Order
 
 app.listen(port, ()=>{
     console.log(`App listening on port: ${port}`);

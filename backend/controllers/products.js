@@ -119,12 +119,10 @@ const updateStatus = async (req, res) => {
     }
 }
 
-
 const getAllProducts = async (req, res) => { 
     const allProducts = await productsmodel.find({});
     res.status(200).json({ allProducts });
 };
-
 
 const filterProducts = async (req, res) => {
     const categories = req.body.categories || [];

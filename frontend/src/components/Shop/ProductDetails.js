@@ -126,16 +126,22 @@ function ProductDetails() {
       setAddToCartError('');
       
       try {
-        await axios.post('http://localhost:8080/api/order/addCart', {
+        await axios.post('http://localhost:8080/api/cart/addCart', {
           userId: userId,
           cartDetails: [{
             productId: productDetails._id
           }]
         }).then((response) => { 
           if (response.status && response.status === 200) {
+            if (response.data.statuscode == 3) {
+              setAddToCartMessage("Product already added to cart!");
+              return false;
+            }
             // data added to cart
             setAddToCartMessage('Product added to cart successfully!');
-          } else {
+          
+          }
+          else {
             // could not add data to cart
             setAddToCartMessage('Error adding product to cart. Please try again later.');
           }
@@ -183,7 +189,7 @@ function ProductDetails() {
           {addToCartError && <p style={{ color: 'red' }}>{addToCartError}</p>}
 
           <div style={buttonContainerStyle}>
-            <button className='btn btn-success m-1' onClick={handleAddToCart}>
+            <button className='btn btn-primary m-1' onClick={handleAddToCart}>
               Add to Cart
             </button>
             <button className='btn btn-secondary m-1' onClick={handleAddToWishlist}>
@@ -203,7 +209,7 @@ function ProductDetails() {
               <Button variant="secondary" onClick={handleClose}>
                 Close
               </Button>
-              <Link to="/Login" className="login-link">
+              <Link to="/CustomerLogin" className="login-link">
               <Button variant="primary">
                 Sign Up/Login
                 </Button>
