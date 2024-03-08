@@ -21,6 +21,9 @@ import CraftsmenList from './components/Admin/CraftsmenList.js';
 import Index from './components/Shop/Index.js';
 import ProductDetails from './components/Shop/ProductDetails.js';
 import Cart from './components/Cart/Cart.js';
+import AddUpdateBlogs from './components/Blogs/AddUpdateBlogs.js';
+import Blogs from './components/Blogs/Blogs.js';
+import ViewBlogs from './components/Blogs/ViewBlogs.js';
 
 function App() {
 
@@ -54,6 +57,9 @@ function App() {
             <Route path="/Shop" element={<Index />} />
             <Route path="/ProductDetails" element={<ProductDetails />} />
             <Route path="/Cart" element={<Cart />} />
+            <Route path="/AddUpdateBlogs" element={<AddUpdateBlogs />} />
+            <Route path="/Blogs" element={<Blogs />} />
+            <Route path="/ViewBlogs" element={<ViewBlogs />} />
           </Route>
         </Routes>
       </BrowserRouter>

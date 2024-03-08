@@ -77,6 +77,13 @@ function Header() {
                     <Link className="nav-link" to="/Shop">Shop</Link>
                   </li>
                 ) : ""}
+
+                {userType === 0 || userType === 1 ? (
+                  
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/Blogs">Blogs</Link>
+                  </li>
+                ) : ""}
                               
               </ul>
               
@@ -152,6 +159,23 @@ function Header() {
                         <li>
                           <Link to="/AddUpdateProduct" state={{ type: 'new' }}  className="nav-link px-0 align-middle">
                             <i className="fa-solid fa-list"></i> <span className="ms-1 d-none d-sm-inline">Add Product</span>
+                          </Link>
+                        </li>
+                      ) : ""}
+
+                      
+                      {userType === 2 ? (
+                        <li>
+                          <Link to="/ViewBlogs" state={{ type: 'new' }}  className="nav-link px-0 align-middle">
+                            <i className="fa fa-sticky-note"></i> <span className="ms-1 d-none d-sm-inline">My Blogs</span>
+                          </Link>
+                        </li>
+                      ) : ""}
+
+                      {userType === 2 ? (
+                        <li>
+                          <Link to="/AddUpdateBlogs" state={{ type: 'new' }}  className="nav-link px-0 align-middle">
+                            <i className="fa fa-pencil"></i> <span className="ms-1 d-none d-sm-inline">Add Blog</span>
                           </Link>
                         </li>
                       ) : ""}

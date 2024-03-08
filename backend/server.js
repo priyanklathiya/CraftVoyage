@@ -70,6 +70,7 @@ const productsRoutes = require('./routes/products');
 const categoryRoutes = require('./routes/category');
 const conditionRoutes = require('./routes/condition');
 const cartRoutes = require('./routes/cart');
+const blogsRoutes = require('./routes/blogs');
 
 // Login / Signup
 app.use('/api/users', usersRoutes);
@@ -91,6 +92,9 @@ app.use('/api/products', productsRoutes);
 
 // cart
 app.use('/api/cart', cartRoutes);
+
+// blogs
+app.use('/api/blogs', blogsRoutes);
 
 // Order
 

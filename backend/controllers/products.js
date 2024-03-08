@@ -1,4 +1,3 @@
-const bcrypt = require('bcrypt');
 const productsmodel = require('../models/products.model');
 
 const getAllProductsById = async (req, res) => {
