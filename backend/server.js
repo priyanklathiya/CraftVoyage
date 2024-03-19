@@ -6,6 +6,8 @@ const bodyParser = require('body-parser');
 const expressSession = require('express-session');
 const cookieParser = require('cookie-parser');
 
+const stripe = require("stripe")("sk_test_51OtC6IFJ9IYTcdSKN5kcQBP4CM0qqwi9CZDcauwvBkKKIcbraWYU33VB6Riwf98L04wpzq8pPRgDlYLzIf63I7jQ007SBChOQA");
+
 
 // database connection
 require('dotenv').config();
@@ -71,6 +73,7 @@ const categoryRoutes = require('./routes/category');
 const conditionRoutes = require('./routes/condition');
 const cartRoutes = require('./routes/cart');
 const blogsRoutes = require('./routes/blogs');
+const ordersRoutes = require('./routes/orders');
 
 // Login / Signup
 app.use('/api/users', usersRoutes);
@@ -96,7 +99,53 @@ app.use('/api/cart', cartRoutes);
 // blogs
 app.use('/api/blogs', blogsRoutes);
 
+// stripe
+
+app.post("/api/create-checkout-session", async (req, res) => {
+  try {
+    const { products } = req.body;
+
+    const line_items = products.map((product)=>({
+      price_data: {
+        currency: "usd",
+        product_data: {
+          name: product.title,
+        },
+        unit_amount: product.price * 100,
+      },
+      quantity: 1
+    }));
+    
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],   
+      line_items: line_items,
+      mode: "payment",
+      success_url: "http://localhost:8080/success",
+      cancel_url: "http://localhost:3000/cancel"
+    });
+
+      const payment = new
+
+      res.status(200).json({ success: true, message: 'Successfully created', session });
+      
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Error creating checkout session' });
+  }
+});
+
 // Order
+// app.use('/api/orders', ordersRoutes);
+
+app.get("/successfulPayment", async (req, res) => {
+    const paymentSessionId = req.query.paymentSessionId;
+    console.log(paymentSessionId);
+    // console.log(req.session.paymentSId);
+  // Retrieve session details from Stripe using the session ID
+    // const session = await stripe.checkout.sessions.retrieve(req.session.paymentSessionId);
+    // console.log(session);
+  // Handle successful payment logic
+});
+
 
 app.listen(port, ()=>{
     console.log(`App listening on port: ${port}`);

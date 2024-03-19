@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 
 function Cart() {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
   const [userId, setUserId] = useState('');
   const [cartData, setCartData] = useState(null);
   const [message, setMessage] = useState(null);
-  
+
   useEffect(() => {
     async function fetchUserSession() {
       try {
@@ -87,6 +86,39 @@ function Cart() {
           setMessage({ text: 'Internal Server Error', type: 'error' });
       }
   };
+
+  const makePayment = async () => {
+  try {
+    const body = {
+      products: cartData
+    };
+
+    const headers = {
+      "Content-Type": "application/json"
+    };
+
+    const response = await fetch("http://localhost:8080/api/create-checkout-session", {
+      method: "POST",
+      body: JSON.stringify(body),
+      headers: headers
+    });
+
+    const data = await response.json(); // Await the response.json() promise
+
+    // console.log(data);
+
+    if (!response.ok) {
+      throw new Error(data.message + " Please try again");
+    }
+
+    if (data.session.url) {
+      window.location.href = data.session.url; // Redirect to the payment page
+    }
+  } catch (error) {
+    alert("Error making payment: " + error.message);
+  }
+};
+
   
   return (
     <>
@@ -94,27 +126,32 @@ function Cart() {
       {isLoggedIn === true && (
         <>
           <div className='container'>
+            <h2 className='mt-2'>Your Cart</h2>
+            <hr />
             {cartData && cartData.length > 0 ? (
               <>
                 {cartData.map((item, index) => (
-                  <div className="card mb-3" key={index} >
-                    <div className="row no-gutters">
-                      <div className="col-md-4">
-                        <img src={`http://localhost:8080/${item.image}`} alt={item.title}  className="card-img" />
-                      </div>
-                      <div className="col-md-8">
-                        <div className="card-body">
-                          <h5 className="card-title">{item.title}</h5>
-                          <p className="card-text">( Artist - {item.artist} )</p>
-                          <p className="card-text"><b>${item.price}</b></p>
-                          <button className='btn btn-danger' onClick={() => handleRemoveFromCart(item.productId )}>Remove</button>
-                        </div>
-                      </div>
+                  <div className='border border-secondary row mb-1  d-flex align-items-center justify-content-center p-1' key={index}>
+                    <div className="col-sm-2">
+                      <img src={`http://localhost:8080/${item.image}`} alt={item.title} className="card-img" style={{ maxWidth: '150px', width: 'auto', height: 'auto'  }} />
+                    </div>
+                    <div className="col-sm-4">
+                      <span className='h3'>{item.title}  </span> <span className='p-2'>( Artist - {item.artist} )</span>
+                    </div>
+                    <div className='col-sm-4'><b>${item.price}</b></div>
+                    <div className='col-sm-2'> <button className='btn btn-danger' onClick={() => handleRemoveFromCart(item.productId)}>Remove</button>
                     </div>
                   </div>
-                                    
-                    
                 ))}
+                <hr className='mt-5'/>
+                <div className="row">
+
+                  <div className="col-sm-3 h4">Total Items: {cartData.length}</div>
+                  
+                  <div className="col-sm-7 h4">Total Amount: ${cartData.reduce((total, item) => total + item.price, 0)}</div>
+                  <div className='col-sm-2'><button className='btn btn-success' onClick={makePayment}>Checkout</button></div>
+                </div>
+                <hr/>
               </>
             ) : (
               <p>Your cart is empty.</p>

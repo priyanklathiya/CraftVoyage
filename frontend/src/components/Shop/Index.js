@@ -10,8 +10,10 @@ function Index() {
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [selectedConditions, setSelectedConditions] = useState([]);
     const [sortBy, setSortBy] = useState('');
+    const [loading, setLoading] = useState(true);
+  const [isLinkCopied, setIsLinkCopied] = useState(false);
+  const [sharedProductId, setSharedProductId] = useState(null);
 
-  const [loading, setLoading] = useState(true);
 
     const fetchData = async () => {
         try {
@@ -27,7 +29,6 @@ function Index() {
             setLoading(false);
         }
     };
-    
     
     useEffect(() => {
         fetchData();
@@ -53,80 +54,85 @@ function Index() {
         }   
     };
     
-  const handleCategoryChange = (categoryId) => {
-    setSelectedCategories((prevSelected) => {
-      if (prevSelected.includes(categoryId)) {
-        return prevSelected.filter((id) => id !== categoryId);
-      } else {
-        return [...prevSelected, categoryId];
-      }
-    });
-  };
-    
-    const handleConditionChange = (conditionId) => {
-        setSelectedConditions((prevSelected) => {
-        if (prevSelected.includes(conditionId)) {
-            return prevSelected.filter((id) => id !== conditionId);
-        } else {
-            return [...prevSelected, conditionId];
-        }
+    const handleCategoryChange = (categoryId) => {
+        setSelectedCategories(prevSelected => {
+            if (prevSelected.includes(categoryId)) {
+                return prevSelected.filter(id => id !== categoryId);
+            } else {
+                return [...prevSelected, categoryId];
+            }
         });
     };
-  
     
-  const categoriesList = categoryList.length > 0 ? (
-    categoryList.map((category) => (
-      <label key={category._id} className='m-1'>
-        <input
-          type="checkbox"
-          value={category._id}
-          checked={selectedCategories.includes(category._id)}
-          onChange={() => handleCategoryChange(category._id)}
-        />
-        {category.categoryName}
-      </label>
-    ))
-  ) : (
-    <div></div>
-  );
+    const handleConditionChange = (conditionId) => {
+        setSelectedConditions(prevSelected => {
+            if (prevSelected.includes(conditionId)) {
+                return prevSelected.filter(id => id !== conditionId);
+            } else {
+                return [...prevSelected, conditionId];
+            }
+        });
+    };
     
-  const conditionsList = conditionList.length > 0 ? (
-    conditionList.map((condition) => (
-      <label key={condition._id} className='m-1'>
-        <input
-          type="checkbox"
-          value={condition._id}
-          checked={selectedConditions.includes(condition._id)}
-          onChange={() => handleConditionChange(condition._id)}
-        />
-            {condition.conditionName}
-      </label>
-    ))
-  ) : (
-    <div></div>
-  );
+    const handleSortByChange = (selectedSortBy) => {
+        setSortBy(selectedSortBy);
+    };
   
-  const handleSortByChange = (selectedSortBy) => {
-      setSortBy(selectedSortBy);
-  };
+      const handleShareButtonClick = (productId) => {
+        const shareableLink = `http://localhost:3000/ProductDetails?id=${productId}`;
+        navigator.clipboard.writeText(shareableLink);
+        setSharedProductId(productId); // Set the shared product ID
+        setTimeout(() => {
+            setSharedProductId(null); // Reset the shared product ID after some time
+        }, 3000); // Reset after 3 seconds
+    };
 
-  const sortOptions = [
-    { value: 'lowToHigh', label: 'Price: Low to High' },
-    { value: 'highToLow', label: 'Price: High to Low' },
-    { value: 'newest', label: 'Newest' },
-    // Add more sorting options as needed
-  ];
+    const categoriesList = categoryList.length > 0 ? (
+        categoryList.map(category => (
+            <label key={category._id} className='m-1'>
+                <input
+                    type="checkbox"
+                    value={category._id}
+                    checked={selectedCategories.includes(category._id)}
+                    onChange={() => handleCategoryChange(category._id)}
+                />
+                {category.categoryName}
+            </label>
+        ))
+    ) : (
+        <div></div>
+    );
 
-  const sortByDropdown = (
-    <select value={sortBy} onChange={(e) => handleSortByChange(e.target.value)}>
-      <option value=''>Select</option>
-      {sortOptions.map((option) => (
-        <option key={option.value} value={option.value}>
-          {option.label}
-        </option>
-      ))}
-    </select>
-  );
+    const conditionsList = conditionList.length > 0 ? (
+        conditionList.map(condition => (
+            <label key={condition._id} className='m-1'>
+                <input
+                    type="checkbox"
+                    value={condition._id}
+                    checked={selectedConditions.includes(condition._id)}
+                    onChange={() => handleConditionChange(condition._id)}
+                />
+                {condition.conditionName}
+            </label>
+        ))
+    ) : (
+        <div></div>
+    );
+
+    const sortOptions = [
+        { value: 'lowToHigh', label: 'Price: Low to High' },
+        { value: 'highToLow', label: 'Price: High to Low' },
+        { value: 'newest', label: 'Newest' },
+    ];
+
+    const sortByDropdown = (
+        <select value={sortBy} onChange={e => handleSortByChange(e.target.value)}>
+            <option value=''>Select</option>
+            {sortOptions.map(option => (
+                <option key={option.value} value={option.value}>{option.label}</option>
+            ))}
+        </select>
+    );
 
     return (
         <>
@@ -147,40 +153,42 @@ function Index() {
                 </div>
                 <div className="product-list">
                     {loading ? (
-                    <p>Loading...</p>
+                        <p>Loading...</p>
                     ) : (
-                    productsList.length > 0 ? (
-                        productsList.map((cat) => (
-                        <Link
-                            key={cat._id}
-                            to={`/ProductDetails?id=${cat._id}`}
-                            className="link-none-css"
-                            state={{ productDetails: cat }}
-                        >
-                            <div key={cat._id} className="product-card">
-                            <div className="product-image">
-                                <img
-                                src={`http://localhost:8080/${cat.image}`}
-                                alt={cat.title}
-                                />
-                            </div>
-                            <div className="product-details">
-                                <h3 className="product-title"> {cat.title} </h3>
-                                <p> ( By. {cat.artist} ) </p>
-                                <p className="product-price"> $ {cat.price} </p>
-                                <p className='btn btn-success w-100'>View</p>        
-                            </div>
-                            </div>
-                        </Link>
-                        ))
-                    ) : (
-                        <p>No products available.</p>
-                    )
+                        productsList.length > 0 ? (
+                            productsList.map(product => (
+                                <div key={product._id} className="product-card">
+                                    <div className="product-image">
+                                        <img src={`http://localhost:8080/${product.image}`} alt={product.title} />
+                                    </div>
+                                    <div className="product-details">
+                                        <h3 className="product-title">{product.title}</h3>
+                                        <p> ( By. {product.artist} ) </p>
+                                        <p className="product-price">$ {product.price}</p>
+                                        <div className="product-actions">
+                                            <Link to={`/ProductDetails?id=${product._id}`} className='btn btn-success w-50 m-1'>
+                                                View
+                                            </Link>
+                                            <button
+                                                className={`btn ${sharedProductId === product._id ? 'btn-info' : 'btn-secondary'} w-50`}
+                                                onClick={() => handleShareButtonClick(product._id)}
+                                                disabled={sharedProductId === product._id}
+                                            >
+                                                {sharedProductId === product._id ? "Copied" : "Share"}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))
+                        ) : (
+                            <p>No products available.</p>
+                        )
                     )}
                 </div>
-            </div>
+            </div>        
+        
         </>
-    )
+    );
 }
 
-export default Index
+export default Index;

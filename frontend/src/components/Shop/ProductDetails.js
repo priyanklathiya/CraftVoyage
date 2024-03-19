@@ -4,6 +4,7 @@ import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { Link } from 'react-router-dom';
+import billboard3 from "../../images/Renaissance.jpg";
 
 const containerStyle = {
   display: 'flex',
@@ -60,6 +61,7 @@ function ProductDetails() {
   const [userId, setUserId] = useState('');
   const [addToCartMessage, setAddToCartMessage] = useState('');
   const [addToCartError, setAddToCartError] = useState('');
+  const [sharedProductId, setSharedProductId] = useState(null);
 
   const [show, setShow] = useState(false);
 
@@ -70,31 +72,29 @@ function ProductDetails() {
   const location = useLocation();
   const productId = new URLSearchParams(location.search).get('id');
 
-    
+
   useEffect(() => {
-    axios.get("http://localhost:8080/auth/userSession")
-      .then((response) => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/auth/userSession");
         if (response.data) {
           if (response.data.valid === true) {
-            // if session is true
-            // console.log(response.data);
-// {valid: true, userType: 'customer', userId: '651dc8bee4e9a51b5866b906'}
             setUserId(response.data.userId);
             setIsLoggedIn(true);
           } else {
-            // if session is false
             setIsLoggedIn(false);
-          } 
+          }
         } else {
-          // if session is false
           setIsLoggedIn(false);
         }
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error('Error fetching user session:', error);
         setIsLoggedIn(false);
-      });
+      }
+    };
+    fetchUserData();
   }, []);
+
 
   useEffect(() => {
     fetchProductData(productId);
@@ -158,15 +158,19 @@ function ProductDetails() {
     }
   };
 
-  const handleAddToWishlist = () => {
-    if (isLoggedIn === false) {
-      // Show the login modal
-      handleShow();
-    }
-    };
+  const handleShareButtonClick = async (productId) => {
+    const shareableLink = `http://localhost:3000/ProductDetails?id=${productId}`;
+    await navigator.clipboard.writeText(shareableLink);
+    setSharedProductId(productId); // Set the shared product ID
+    setTimeout(() => {
+        setSharedProductId(null); // Reset the shared product ID after some time
+    }, 3000); // Reset after 3 seconds
+  };
     
   return (
-        <div style={containerStyle}>
+    <>
+      
+      <div style={containerStyle}>
       <h2>{productDetails && productDetails.productName}</h2>
 
       <div style={contentContainerStyle}>
@@ -191,9 +195,14 @@ function ProductDetails() {
           <div style={buttonContainerStyle}>
             <button className='btn btn-primary m-1' onClick={handleAddToCart}>
               Add to Cart
-            </button>
-            <button className='btn btn-secondary m-1' onClick={handleAddToWishlist}>
-              Add to Wishlist
+              </button>
+              
+            <button
+                className={`btn ${sharedProductId === productDetails?._id ? 'btn-info' : 'btn-secondary'} m-1`}
+                onClick={() => handleShareButtonClick(productDetails?._id)}
+                disabled={sharedProductId === productDetails?._id}
+              >
+              {sharedProductId === productDetails?._id ? "Copied" : "Share"}
             </button>
           </div>
           {addToCartMessage && <p style={{ color: addToCartMessage.includes('success') ? 'green' : 'red' }}>{addToCartMessage}</p>}
@@ -222,7 +231,25 @@ function ProductDetails() {
       </div>
 
 
-    </div>
+      </div>
+      
+        <div className='container mission-i mt-5'>
+          <div className='display-4'>Our Mission</div>
+          <hr className="mt-2 mb-4" /> {/* Adjust margins as needed */}
+          <div className="row">
+            <div className="col-md-6">
+              <img className="banner-3-img img-fluid" src={billboard3} alt="Banner-3" />
+            </div>
+            <div className="col-md-6 d-flex align-items-center">
+              <p className="lead text-center"> {/* Added text-center class */}
+                Our mission is to make art investable.
+                CraftVoyage is the only platform that lets you invest in multi-million dollar works of art by artists like Basquiat, Picasso, Banksy, and more.
+              </p>
+            </div>
+          </div>
+      </div>
+      <div className='p-3'></div>
+    </>
   )
 }
 

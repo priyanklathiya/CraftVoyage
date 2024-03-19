@@ -1,0 +1,119 @@
+.banner-i {
+    position: relative;
+    width: 100%;
+    height: 600px;
+    /* Adjust height as needed */
+    overflow: hidden;
+}
+
+.banner-image-i {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: auto;
+    z-index: 1;
+}
+
+.overlay-i {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Adjust opacity as needed */
+    z-index: 2;
+}
+
+.text-i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    color: white;
+    text-align: center;
+}
+
+.text-i h1 {
+    margin-bottom: 10px;
+}
+
+.text-i h3 {
+    margin-bottom: 20px;
+}
+
+.button-i {
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+    padding: 10px 20px;
+    font-size: 1rem;
+    /* Adjust as needed */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button-i:hover {
+    background-color: white;
+    color: black;
+}
+
+.banner-2 {
+    background-color: #273A36;
+ 
+    
+}
+.banner-2-img{
+    width: auto;
+    height: 400px;
+
+}
+
+.banner-3-img{
+    width: auto;
+    height: 400px;
+}
+/* Media Queries for Tablets */
+@media only screen and (max-width: 768px) {
+    .text-i {
+        width: 100%;
+    }
+
+    .banner-i {
+        height: 200px;
+        /* Adjust height for tablet */
+    }
+        .banner-2-img {
+            width: auto;
+            height: 300px;
+    
+        }
+        .banner-3-img {
+            width: auto;
+            height: 300px;
+        }
+}
+
+/* Media Queries for Phones */
+@media only screen and (max-width: 480px) {
+    .text-i {
+            width: 100%;
+        }
+        
+    .banner-i {
+        height: 300px;
+        /* Adjust height for phone */
+    }
+        .banner-2-img {
+            width: auto;
+            height: 200px;
+    
+        }
+        .banner-3-img {
+            width: auto;
+            height: 200px;
+        }
+}

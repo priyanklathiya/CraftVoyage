@@ -24,10 +24,13 @@ import Cart from './components/Cart/Cart.js';
 import AddUpdateBlogs from './components/Blogs/AddUpdateBlogs.js';
 import Blogs from './components/Blogs/Blogs.js';
 import ViewBlogs from './components/Blogs/ViewBlogs.js';
+import Cancel from './components/Checkout/Cancel.js';
+import Success from './components/Checkout/Success.js';
 
 function App() {
 
   const HeaderFooterRoute = () => (
+
     <>
       <Header />
       <Footer />
@@ -60,6 +63,8 @@ function App() {
             <Route path="/AddUpdateBlogs" element={<AddUpdateBlogs />} />
             <Route path="/Blogs" element={<Blogs />} />
             <Route path="/ViewBlogs" element={<ViewBlogs />} />
+            <Route path="/Success" element={<Success />} />
+            <Route path="/Cancel" element={<Cancel />} />
           </Route>
         </Routes>
       </BrowserRouter>
