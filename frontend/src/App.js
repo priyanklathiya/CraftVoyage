@@ -26,6 +26,8 @@ import Blogs from './components/Blogs/Blogs.js';
 import ViewBlogs from './components/Blogs/ViewBlogs.js';
 import Cancel from './components/Checkout/Cancel.js';
 import Success from './components/Checkout/Success.js';
+import MyOrders from './components/Orders/MyOrders.js';
+import AllOrder from './components/Orders/AllOrder.js';
 
 function App() {
 
@@ -65,6 +67,8 @@ function App() {
             <Route path="/ViewBlogs" element={<ViewBlogs />} />
             <Route path="/Success" element={<Success />} />
             <Route path="/Cancel" element={<Cancel />} />
+            <Route path="/GetAllOrders" element={<AllOrder />} />
+            <Route path="/MyOrders" element={<MyOrders />} />
           </Route>
         </Routes>
       </BrowserRouter>

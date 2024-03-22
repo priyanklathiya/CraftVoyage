@@ -1,36 +1,27 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios';
+import React from 'react';
+import { Link } from 'react-router-dom'
 
 function Success() {
-    
-        useEffect(() => {
-        async function fetchPaymentDetails() {
-            try {
-                const response = await axios.post("http://localhost:8080/successfulPayment");
-                // if (response.data) {
-                //     if (response.data.valid === true) {
-                //         setUserId(response.data.userId);
-                //         setIsLoggedIn(true);
-                //     } else {
-                //         setIsLoggedIn(false);
-                //         window.location.href = '/CustomerLogin';
-                //     }
-                // } else {
-                //     setIsLoggedIn(false);
-                //     window.location.href = '/CustomerLogin';
-                // }
-            } catch (error) {
-                console.error('Error fetching user session:', error);
-            }
-        }
-
-        fetchPaymentDetails();
-        
-        }, []);
-    
   return (
-    <div>Success</div>
-  )
+    <>
+      <div className="container mt-5 mb-5">
+        <div className="row justify-content-center">
+          <div className="col-md-6">
+            <div className="card shadow">
+              <div className="card-body text-center">
+                <i className="fas fa-check-circle text-success fa-5x mb-4"></i>
+                <h2 className="card-title">Payment Successful!</h2>
+                <p className="card-text">Thank you for your purchase.</p>
+                  <Link className="btn btn-primary" to="/Shop">Continue Shopping</Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className='m-5 p-5'></div>
+      <div className='m-5 p-5'></div>
+    </>
+  );
 }
 
-export default Success
+export default Success;

@@ -20,7 +20,7 @@ a {
 .product-list{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    max-width: 75%;
+    width: 75%;
     height: 100%;
     padding: 10px;
     grid-gap: 20px;

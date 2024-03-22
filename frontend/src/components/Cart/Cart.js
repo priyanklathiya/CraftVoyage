@@ -90,7 +90,8 @@ function Cart() {
   const makePayment = async () => {
   try {
     const body = {
-      products: cartData
+      products: cartData,
+      userId: userId
     };
 
     const headers = {

@@ -99,11 +99,18 @@ app.use('/api/cart', cartRoutes);
 // blogs
 app.use('/api/blogs', blogsRoutes);
 
+// Order
+app.use('/api/orders', ordersRoutes);
+
+
 // stripe
+const orderModel = require('./models/order.model');
+const cartModel = require('./models/cart.model');
+const productsmodel = require('./models/products.model');
 
 app.post("/api/create-checkout-session", async (req, res) => {
   try {
-    const { products } = req.body;
+    const { products, userId } = req.body;
 
     const line_items = products.map((product)=>({
       price_data: {
@@ -120,11 +127,12 @@ app.post("/api/create-checkout-session", async (req, res) => {
       payment_method_types: ["card"],   
       line_items: line_items,
       mode: "payment",
-      success_url: "http://localhost:8080/success",
-      cancel_url: "http://localhost:3000/cancel"
+      success_url: "http://localhost:3000/success",
+      cancel_url: "http://localhost:3000/cancel",
+      metadata: {
+        userId: userId
+      }
     });
-
-      const payment = new
 
       res.status(200).json({ success: true, message: 'Successfully created', session });
       
@@ -133,19 +141,93 @@ app.post("/api/create-checkout-session", async (req, res) => {
   }
 });
 
-// Order
-// app.use('/api/orders', ordersRoutes);
+const endpointSecret = "whsec_Qy8lsIbgo7ClRO1AbyMkRCxwQCFDJ1SC";
 
-app.get("/successfulPayment", async (req, res) => {
-    const paymentSessionId = req.query.paymentSessionId;
-    console.log(paymentSessionId);
-    // console.log(req.session.paymentSId);
-  // Retrieve session details from Stripe using the session ID
-    // const session = await stripe.checkout.sessions.retrieve(req.session.paymentSessionId);
-    // console.log(session);
-  // Handle successful payment logic
+// Listen for the checkout.session.completed event
+app.post("/webhook/stripe", async (req, res) => {
+  let event;
+
+  try {
+    event = req.body;
+    
+  // Handle the event
+  if (event.type === 'checkout.session.completed') {
+    const session = event.data.object;
+
+          // Retrieve user ID from metadata
+      const userId = session.metadata.userId;
+
+    // get cart details
+    const cartDetails = await cartModel.find({ userId: userId });
+    // Array to store final result
+    const resultArray = [];
+
+    // Iterate over cart details
+    for (const cartItem of cartDetails[0].cartDetails) {
+        // Fetch product details using productId
+        const productDetails = await productsmodel.findOne({ _id: cartItem.productId });
+
+        if (productDetails) {
+            // Construct new object with required details
+            const newItem = {
+                title: productDetails.title,
+                productId: productDetails._id,
+                price: productDetails.price,
+                // artist: productDetails.artist,
+                // year: productDetails.year,
+            };
+
+            // Push the new item to the result array
+            resultArray.push(newItem);
+        }
+    }
+    
+
+    // Iterate over cart details
+    
+
+    const orderDetails = [];
+
+        // Iterate through cartData to populate orderDetails
+        resultArray.forEach((cartItem) => {
+            orderDetails.push({
+                title: cartItem.title,
+                productId: cartItem.productId,
+                price: cartItem.price,
+            });
+        });
+
+
+    // save order
+    const order = await orderModel.create({
+      userId: userId,
+      orderDetails: orderDetails,
+      totalAmount: session.amount_total,
+      paymentIntent: session.payment_intent,
+      paymentId: session.id,
+      paymentStatus: session.payment_status,
+    });
+    
+    // delete cart
+
+    await cartModel.deleteOne({ userId: userId });
+        
+  }
+
+  // Return a response to acknowledge receipt of the event
+  res.json({ received: true });
+
+    
+  } catch (err) {
+    console.error(`Webhook Error: ${err.message}`);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+
 });
 
+
+// Listen to port 8080
 
 app.listen(port, ()=>{
     console.log(`App listening on port: ${port}`);

@@ -1,4 +1,3 @@
-
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -11,7 +10,7 @@ const orderSchema = new Schema({
         required: true
     },
     orderDetails: [{
-        productName: {
+        title: {
             type: String,
             required: true
         },
@@ -22,15 +21,13 @@ const orderSchema = new Schema({
         },
         quantity: {
             type: Number,
-            required: true
+            required: true,
+            default: '1'
         },
         price: {
             type: Number,
             required: true
         },
-        size: {
-            type: String
-        }
     }],
     orderDate: {
         type: Date,
@@ -41,24 +38,19 @@ const orderSchema = new Schema({
         type: Number,
         required: true
     },
+    paymentIntent: {
+        type: String,
+        required: true
+
+    },
     paymentId: {
         type: String,
         required: true
     },
-    deliveryStatus: {
+    paymentStatus: {
         type: String,
-        trim: true,
-        required: true,
-        enum: ['pending', 'processing', 'shipped', 'delivered'],
-        default: 'pending'
-    },
-    statusCode: {
-        type: String,
-        trim: true,
-        required: true,
-        enum: ['0', '1', '2'],
-        default:'0' // 0 - order approval pending, 1 - order approved, 2 - order not approved / Rejected
-    },
+        required: true
+    }
 });
 
 const Order = mongoose.model('Order', orderSchema);

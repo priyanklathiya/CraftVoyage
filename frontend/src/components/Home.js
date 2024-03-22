@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import '../css/homepage.css';
 import billboard from "../images/billboard2.jpg";
 import billboard2 from "../images/banner2.png";
@@ -12,8 +13,9 @@ function Home() {
         <img className="banner-image-i" src={billboard} alt="Banner" />
         <div className="text-i">
           <h1 className='display-1'>Art investing for the future</h1>
-          <h3 className='display-6'>Create a portfolio of Art</h3>
-          <button className='button-i'>Sign up</button>
+          <h3 className='display-6 mb-5'>Create a portfolio of Art</h3>
+          {/* <button className='button-i'>Sign up</button> */}
+          <Link  className='button-i' to="/CustomerLogin">Sign up</Link>
         </div>
       </div>
 

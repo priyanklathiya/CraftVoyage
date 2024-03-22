@@ -105,13 +105,21 @@ function Header() {
                   
               ) : ""}
 
-              {userType === 0 || userType === 1 ? (
-                
-                  <li className="nav-item">
-                    <Link to="/PendingOrders" className="nav-link">Orders</Link>                    
-                  </li>                  
+                {userType === 1 ? (
+                  
+                    <li className="nav-item">
+                      <Link to="/MyOrders" className="nav-link">Orders</Link>                    
+                    </li>                  
 
-              ) : ""}
+                ) : ""}
+                
+                {userType === 0 || userType === 1 ? (
+                  
+                  <li className="nav-item">
+                    <Link to="/Support" className="nav-link">Support</Link>
+                  </li>
+                  
+                ) : ""}
 
                 {userType === 0 || userType === 1 ? (
                   
@@ -210,6 +218,14 @@ function Header() {
                           <li className="nav-item">
                                 <Link to="/CraftsmenList" className="nav-link align-middle px-0">
                                   <i class="fa-brands fa-artstation"></i> <span className="ms-1 d-none d-sm-inline">Craftsmen List</span>  
+                                </Link>  
+                          </li>
+                      ) : ""}
+                      {userType === 3 ? (
+                          <li className="nav-item">
+                                <Link to="/GetAllOrders" className="nav-link align-middle px-0">
+                                  <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                  <span className="ms-1 d-none d-sm-inline">All Orders</span>  
                                 </Link>  
                           </li>
                       ) : ""}
