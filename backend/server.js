@@ -5,6 +5,8 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const expressSession = require('express-session');
 const cookieParser = require('cookie-parser');
+const { Server } = require("socket.io");
+const http = require("http");
 
 const stripe = require("stripe")("sk_test_51OtC6IFJ9IYTcdSKN5kcQBP4CM0qqwi9CZDcauwvBkKKIcbraWYU33VB6Riwf98L04wpzq8pPRgDlYLzIf63I7jQ007SBChOQA");
 
@@ -31,6 +33,62 @@ app.use(cors({
     methods: ["POST", "GET"],
     credentials: true
 }));
+
+// socket io
+
+const server = http.createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: ["http://localhost:3000", "http://192.168.56.1:3000"],
+    methods: ['GET', 'POST'],
+  }
+})
+
+// io.on('connection', (socket) => {
+  
+//   console.log(`a user connected on ${socket.id}`);
+
+//   socket.on("send-message", (data) => { // Corrected syntax
+//     // const message = data.message;
+//     console.log(data);
+//   });
+
+//   socket.on( 'disconnect', () => {
+//       console.log(`user disconnected on ${socket.id}`)
+//   });
+  
+// } );
+
+
+const userMessages = {};
+
+io.on('connection', (socket) => {
+    console.log(`a user connected on ${socket.id}`);
+
+    socket.on('user-message', (data) => {
+        console.log(`User ${socket.id} sent message: ${data.message}`);
+        // Store user message
+        if (!userMessages[socket.id]) {
+            userMessages[socket.id] = [];
+        }
+        userMessages[socket.id].push({ user: data.user, message: data.message });
+        // Emit the user message to all admin sockets
+        io.emit('user-message', { userId: socket.id, ...data });
+    });
+
+    socket.on('disconnect', () => {
+        console.log(`user disconnected on ${socket.id}`);
+        // Remove user message history when disconnected
+        delete userMessages[socket.id];
+    });
+
+    // Listen for admin replies
+    socket.on('admin-reply', (data) => {
+        // Emit admin reply to the specific user
+        io.to(data.userId).emit('admin-reply', data);
+    });
+})
 
 app.use(bodyParser.urlencoded())
 app.use(express.json());
@@ -229,6 +287,10 @@ app.post("/webhook/stripe", async (req, res) => {
 
 // Listen to port 8080
 
-app.listen(port, ()=>{
-    console.log(`App listening on port: ${port}`);
-})
+// app.listen(port, ()=>{
+//     console.log(`App listening on port: ${port}`);
+// })
+
+server.listen(port, () => {
+  console.log(`Server listening on ${port}`);
+});

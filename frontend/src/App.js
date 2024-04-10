@@ -28,6 +28,8 @@ import Cancel from './components/Checkout/Cancel.js';
 import Success from './components/Checkout/Success.js';
 import MyOrders from './components/Orders/MyOrders.js';
 import AllOrder from './components/Orders/AllOrder.js';
+import ClientChat from './components/Chat/ClientChat.js';
+import AdminChat from './components/Chat/AdminChat.js';
 
 function App() {
 
@@ -69,6 +71,8 @@ function App() {
             <Route path="/Cancel" element={<Cancel />} />
             <Route path="/GetAllOrders" element={<AllOrder />} />
             <Route path="/MyOrders" element={<MyOrders />} />
+            <Route path="/Livechat" element={<ClientChat />} />
+            <Route path="/Adminchat" element={<AdminChat />} />
           </Route>
         </Routes>
       </BrowserRouter>

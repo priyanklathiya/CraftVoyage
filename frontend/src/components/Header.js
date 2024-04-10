@@ -116,7 +116,7 @@ function Header() {
                 {userType === 0 || userType === 1 ? (
                   
                   <li className="nav-item">
-                    <Link to="/Support" className="nav-link">Support</Link>
+                    <Link to="/Livechat" className="nav-link">Live Chat Support</Link>
                   </li>
                   
                 ) : ""}
